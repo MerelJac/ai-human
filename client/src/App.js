@@ -1,4 +1,4 @@
-import logo from "./logo.svg";
+import logo from "./robot.png";
 import "./App.css";
 
 import {
@@ -125,7 +125,8 @@ const Login = () => {
   };
   return (
     <>
-      <h3>Login to Dashboard</h3>
+      <img src={logo} className="App-logo" alt="logo" />
+      <h3>Welcome to AI Human</h3>
       <button className="btn" onClick={handleLogin}>
         Login
       </button>
@@ -176,7 +177,6 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <AuthContextProvider>
           <RouterProvider router={router} />
         </AuthContextProvider>
