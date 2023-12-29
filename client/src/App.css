@@ -50,6 +50,6 @@
   border: none;
   color: white;
   font-weight: 600;
-  margin: 1rem 0;
+  /* margin: 1rem 0; */
   cursor: pointer;
 }

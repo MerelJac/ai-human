@@ -100,9 +100,9 @@ export default function Chatbox({
     ) : null}
   </section>
 
-  <div className="h-[20%] flex justify-between absolute bottom-0 p-2 w-full">
+  <div className="flex justify-between absolute bottom-0 w-full">
     <textarea
-      className="text-black p-2 rounded-lg w-[80%] z-10"  // Set z-index to ensure it's above the content
+      className="text-black p-2 rounded-lg w-[80%] z-10 m-2"  // Set z-index to ensure it's above the content
       name="chat-text"
       id="chat-text"
       value={chatText}
@@ -110,8 +110,8 @@ export default function Chatbox({
       rows="3"
       style={{ resize: "none" }}
     />
-    <div className="flex flex-col">
-      <button className="btn" onClick={handleButtonClick}>
+    <div className="flex flex-col items-center">
+      <button className="btn m-2" onClick={handleButtonClick}>
         Go
       </button>
       <button className="btn" onClick={handleShareClick}>
