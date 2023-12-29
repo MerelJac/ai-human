@@ -155,10 +155,23 @@ app.get("/api/chats", auth, async (req, res) => {
   }
 });
 
+// Get chats that are shareable
+app.get("/api/chats/share", auth, async (req, res) => {
+  try {
+    const chats = await Chat.find({shareChat: true});
+    res.json({ chats });
+  } catch (err) {
+    console.error("Error fetching chats: ", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
 const PORT = process.env.PORT || 8080;
 
 // app.listen(PORT, () => console.log(`🚀 Server listening on port ${PORT}`));
 
+// Seed the chats -- TODO move later
 const chatSchema = new mongoose.Schema({
   userID: { type: Number, required: true },
   chatContent: { type: String, required: true, unique: true },
