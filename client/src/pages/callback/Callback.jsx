@@ -13,10 +13,9 @@ export default function Callback() {
           try {
             if (called.current) return; // prevent rerender caused by StrictMode
             called.current = true;
-            const res = await axios.get(
+            await axios.get(
               `${serverUrl}/auth/token${window.location.search}`
             );
-            console.log("response: ", res);
             checkLoginState();
             navigate("/");
           } catch (err) {
