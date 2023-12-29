@@ -86,30 +86,41 @@ export default function Chatbox({
   };
 
   return (
-    <div>
-      <section key={newChatId}>
-        {/* Render the content prop here or use it as needed */}
-        {chatId ? content.map((c, index) => <p key={index}>{c}</p>) : null}
-      </section>
-      <div className="flex justify-between absolute bottom-0 p-2 w-full">
-        <textarea
-          className="text-black p-2 rounded-lg w-[80%]"
-          name="chat-text"
-          id="chat-text"
-          value={chatText}
-          onChange={handleInputChange}
-          rows="3"
-          style={{ resize: "none" }}
-        />
-        <div className="flex flex-col">
-          <button className="btn" onClick={handleButtonClick}>
-            Go
-          </button>
-          <button className="btn" onClick={handleShareClick}>
-            Share
-          </button>
-        </div>
+<div className="h-[100%] overflow-y-auto">
+  <section className="h-[80%] pb-16 overflow-y-auto" key={newChatId}>
+    {/* Render the content prop here or use it as needed */}
+    {chatId ? (
+      <div className="my-2 mx-2 break-words">
+        {content.map((c, index) => (
+          <p className="bg-gray-500 rounded-lg p-2 mt-2" key={index}>
+            {c}
+          </p>
+        ))}
       </div>
+    ) : null}
+  </section>
+
+  <div className="h-[20%] flex justify-between absolute bottom-0 p-2 w-full">
+    <textarea
+      className="text-black p-2 rounded-lg w-[80%] z-10"  // Set z-index to ensure it's above the content
+      name="chat-text"
+      id="chat-text"
+      value={chatText}
+      onChange={handleInputChange}
+      rows="3"
+      style={{ resize: "none" }}
+    />
+    <div className="flex flex-col">
+      <button className="btn" onClick={handleButtonClick}>
+        Go
+      </button>
+      <button className="btn" onClick={handleShareClick}>
+        Share
+      </button>
     </div>
+  </div>
+</div>
+
+
   );
 }

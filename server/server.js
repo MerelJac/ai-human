@@ -283,18 +283,29 @@ const chatSchema = new mongoose.Schema({
 
 const Chat = mongoose.model("Chat", chatSchema);
 
-const chat = new Chat({
-  userID: 2,
+// Seed two chats
+const chat1 = new Chat({
+  userID: "2",
   userEmail: "merel.burleigh@gmail.com",
-  chatContent: "Why did the anarchist bring a ladder to the protest?",
-  collabUsers: [3],
-  shareChat: true
+  chatContent: "What did the anarchist bring to the party?",
+  shareChat: true,
 });
-chat.save().then(
-  (res) => console.log("One entry added", res),
-  (err) => console.log(err)
-);
 
+const chat2 = new Chat({
+  userID: "2",
+  userEmail: "matt@anarchy.io",
+  chatContent: "What do you call a cow with no legs?",
+  shareChat: true,
+});
+
+// Save both chats
+Promise.all([chat1.save(), chat2.save()])
+  .then((results) => {
+    console.log("Seeded chats:", results);
+  })
+  .catch((err) => {
+    console.error("Error seeding chats:", err);
+  });
 const connectToMongoDB = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI, {

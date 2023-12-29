@@ -2,7 +2,7 @@ import React from 'react';
 import logo from '../../robot.png';
 import Post from '../posts/Post';
 
-export default function Sidebar({chatContent, handleChatClick, setChatId, user}) {
+export default function Sidebar({chatContent, handleChatClick, setChatId, user, setChatboxContent}) {
 
 
     const triggerNewChat = () => {
@@ -25,7 +25,7 @@ export default function Sidebar({chatContent, handleChatClick, setChatId, user})
         <article>
         <p>Your recent chats</p>
         {/* <Post url={`/api/chats/user/${user?.id}`}/> */}
-        <Post email={user.email} apiCall={"post"} content={chatContent} handleChatClick={handleChatClick} url={`/api/chats/user/${user.email}`}/>
+        <Post setChatboxContent={setChatboxContent} email={user.email} apiCall={"post"} content={chatContent} handleChatClick={handleChatClick} url={`/api/chats/user/${user.email}`}/>
         </article>
         <article>
         <p>Your shared chats</p>
