@@ -1,14 +1,11 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
-export default function Chatbox(props) {
+export default function Chatbox({content}) {
   const [chatText, setChatText] = useState("");
 
   // Update chatText when the content prop changes
-  useEffect(() => {
-    setChatText(props.content || "");
-  }, [props.content]);
 
   const handleInputChange = (e) => {
     setChatText(e.target.value);
@@ -32,7 +29,7 @@ export default function Chatbox(props) {
     <div>
       <section>
         {/* Render the content prop here or use it as needed */}
-        {props.content && <h2>{props.content}</h2>}
+        {content}
       </section>
       <div className="flex justify-between absolute bottom-0 p-2 w-full">
         <textarea

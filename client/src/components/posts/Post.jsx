@@ -1,9 +1,8 @@
 import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../../App"; // Import the AuthContext from App.js
-import Chatbox from "../chatbox/Chatbox";
 
-export default function Post({ url }) {
+export default function Post({ url, chatContent, handleChatClick }) {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [chats, setChats] = useState([]);
   const [chatboxContent, setChatboxContent] = useState(""); // Add this line
@@ -28,11 +27,6 @@ export default function Post({ url }) {
     fetchData();
   }, [loggedIn, serverUrl, url]);
 
-  const handleChatClick = (content) => {
-    // Update the content in the Chatbox component
-    console.log(content)
-    setChatboxContent(content);
-  };
   
   
 

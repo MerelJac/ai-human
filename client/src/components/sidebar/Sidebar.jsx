@@ -3,8 +3,9 @@ import logo from '../../robot.png';
 import Post from '../posts/Post';
 import { AuthContext } from '../../App';
 
-export default function Sidebar() {
+export default function Sidebar({chatContent, handleChatClick}) {
     const {user} = useContext(AuthContext)
+
   return (
     <div className='flex flex-col'>
       <section className='flex items-center justify-between pb-4'>
@@ -21,7 +22,7 @@ export default function Sidebar() {
         <article>
         <p>Your recent chats</p>
         {/* <Post url={`/api/chats/user/${user?.id}`}/> */}
-        <Post url={`/api/chats/`}/>
+        <Post content={chatContent} handleChatClick={handleChatClick} url={`/api/chats/`}/>
         </article>
         <article>
         <p>Your shared chats</p>
