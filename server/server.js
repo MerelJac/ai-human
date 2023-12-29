@@ -162,8 +162,6 @@ app.post("/api/chats/", auth, async (req, res) => {
   try {
     // Get the chatText from the request body
     const chatText = req.body.chatPlusRandomString;
-
-    console.log("chat text", [chatText])
     // Check if chatText is provided
     if (!chatText) {
       return res.status(400).json({ error: "Chat text is required" });
@@ -188,7 +186,6 @@ app.put("/api/chats/:chatId", auth, async (req, res) => {
 
     const chatId = req.params.chatId;
     const chatText = req.body.chatPlusRandomString;
-    console.log("hit me", [chatText])
     // Check if chatText is provided
     if (!chatText) {
       return res.status(400).json({ error: "Chat text is required" });

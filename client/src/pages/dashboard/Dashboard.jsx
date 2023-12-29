@@ -51,7 +51,7 @@ export default function Dashboard() {
     <>
       <div className="flex flex-row w-full h-[100vh]">
         <section className="w-1/3 bg-white text-black px-4 relative flex flex-col h-full">
-          <Sidebar content={chatContent} handleChatClick={handleChatClick}/>
+          <Sidebar content={chatContent} handleChatClick={handleChatClick} setChatId={setChatId}/>
           <footer className="flex items-center justify-center absolute bottom-0 w-full">
             <img
               className="rounded-full"
@@ -64,7 +64,7 @@ export default function Dashboard() {
           </footer>
         </section>
         <section className="w-2/3 relative">
-          <Chatbox content={chatContent} chatId={chatId} setChatboxContent={setChatboxContent} />
+          <Chatbox content={chatContent} chatId={chatId} setChatboxContent={setChatboxContent} setChatId={setChatId}/>
         </section>
       </div>
     </>

@@ -1,8 +1,8 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
-export default function Chatbox({ content, chatId, setChatboxContent }) {
+export default function Chatbox({ content, chatId, setChatboxContent, setChatId }) {
   const [chatText, setChatText] = useState("");
   const [newChatId, setNewChatId] = useState(chatId);
 
@@ -26,11 +26,9 @@ export default function Chatbox({ content, chatId, setChatboxContent }) {
 
   const handleButtonClick = async () => {
     const chatPlusRandomString = [chatText, createRandomText(200)]
-    console.log(chatPlusRandomString)
     try {
       if (!chatId) {
         // If there is no chatId, it means it's a new chat, so make a POST request
-        console.log("hit me");
         const response = await axios.post(
           `${serverUrl}/api/chats`,
           { chatPlusRandomString },
@@ -40,9 +38,9 @@ export default function Chatbox({ content, chatId, setChatboxContent }) {
         const chatIdNew = response.data.chat._id; // Adjust this based on your server response
         setChatboxContent(response.data.chat.chatContent)
         setNewChatId(chatIdNew);
+        setChatId(chatIdNew)
         setChatText("");
       } else {
-        console.log("hit me");
         // If there is a chatId, it means it's an existing chat, so make a PUT request
         const response = await axios.put(
           `${serverUrl}/api/chats/${chatId}`, // Include the chatId in the URL
