@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
-export default function Chatbox({ content, chatId, user }) {
+export default function Chatbox({ content, chatId, setChatboxContent }) {
   const [chatText, setChatText] = useState("");
   const [newChatId, setNewChatId] = useState(chatId);
 
@@ -24,12 +24,13 @@ export default function Chatbox({ content, chatId, user }) {
         );
         // Assuming the server returns the created chatId in the response
         const chatIdNew = response.data.chat._id; // Adjust this based on your server response
+        setChatboxContent(response.data.chat.chatContent)
         setNewChatId(chatIdNew);
         setChatText("");
       } else {
         console.log("hit me");
         // If there is a chatId, it means it's an existing chat, so make a PUT request
-        await axios.put(
+        const response = await axios.put(
           `${serverUrl}/api/chats/${chatId}`, // Include the chatId in the URL
           { chatText },
           { withCredentials: true },
@@ -39,6 +40,7 @@ export default function Chatbox({ content, chatId, user }) {
             },
           }
         );
+        setChatboxContent(response.data.chat.chatContent)
         setChatText("");
       }
     } catch (error) {
@@ -48,7 +50,7 @@ export default function Chatbox({ content, chatId, user }) {
 
   return (
     <div>
-      <section key={newChatId || chatId}>
+      <section key={newChatId}>
         {/* Render the content prop here or use it as needed */}
         {chatId ? content.map((c, index) => <p key={index}>{c}</p>) : null}
       </section>

@@ -64,7 +64,7 @@ export default function Dashboard() {
           </footer>
         </section>
         <section className="w-2/3 relative">
-          <Chatbox user={user} content={chatContent} chatId={chatId} />
+          <Chatbox content={chatContent} chatId={chatId} setChatboxContent={setChatboxContent} />
         </section>
       </div>
     </>
