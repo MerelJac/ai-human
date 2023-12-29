@@ -1,29 +1,18 @@
 import "./App.css";
 import NotFound from "./pages/notFound/NotFound";
-import Test from "./pages/Test"
-import Dashboard from "./pages/dashboard/Dashboard";
-import Login from "./pages/login/Login";
+import Test from "./pages/Test";
+import Callback from "./pages/callback/Callback";
+import Home from "./pages/home/Home";
 
-import {
-  RouterProvider,
-  createBrowserRouter,
-  useNavigate,
-} from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import axios from "axios";
-import {
-  useEffect,
-  useRef,
-  useState,
-  createContext,
-  useContext,
-  useCallback,
-} from "react";
+import { useEffect, useState, createContext, useCallback } from "react";
 
 // Ensures cookie is sent
 axios.defaults.withCredentials = true;
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
-export { serverUrl }
+export { serverUrl };
 
 const AuthContext = createContext();
 export { AuthContext };
@@ -55,65 +44,6 @@ const AuthContextProvider = ({ children }) => {
   );
 };
 
-const Home = () => {
-  const { loggedIn } = useContext(AuthContext);
-  if (loggedIn === true) return <Dashboard />;
-  if (loggedIn === false) return <Login />;
-  return <></>;
-};
-
-// const Login = () => {
-//   const handleLogin = async () => {
-//     try {
-//       // Gets authentication url from backend server
-//       const {
-//         data: { url },
-//       } = await axios.get(`${serverUrl}/auth/url`);
-//       // Navigate to consent screen
-//       window.location.assign(url);
-//     } catch (err) {
-//       console.error(err);
-//     }
-//   };
-//   return (
-//     <>
-//       <img src={logo} className="App-logo" alt="logo" />
-//       <h3>Welcome to AI Human</h3>
-//       <button className="btn" onClick={handleLogin}>
-//         Login
-//       </button>
-//     </>
-//   );
-// };
-
-const Callback = () => {
-  const called = useRef(false);
-  const { checkLoginState, loggedIn } = useContext(AuthContext);
-  const navigate = useNavigate();
-  useEffect(() => {
-    (async () => {
-      if (loggedIn === false) {
-        try {
-          if (called.current) return; // prevent rerender caused by StrictMode
-          called.current = true;
-          const res = await axios.get(
-            `${serverUrl}/auth/token${window.location.search}`
-          );
-          console.log("response: ", res);
-          checkLoginState();
-          navigate("/");
-        } catch (err) {
-          console.error(err);
-          navigate("/");
-        }
-      } else if (loggedIn === true) {
-        navigate("/");
-      }
-    })();
-  }, [checkLoginState, loggedIn, navigate]);
-  return <></>;
-};
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -122,13 +52,15 @@ const router = createBrowserRouter([
   {
     path: "/auth/callback", // google will redirect here
     element: <Callback />,
-  }, {
+  },
+  {
     path: "/test",
-    element: <Test />
-  }, {
+    element: <Test />,
+  },
+  {
     path: "*",
-    element: <NotFound/>
-  }
+    element: <NotFound />,
+  },
 ]);
 
 function App() {
