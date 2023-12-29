@@ -29,11 +29,11 @@ export default function Sidebar({chatContent, handleChatClick, setChatId, setCha
         <article>
         <p>Your recent chats</p>
         {/* <Post url={`/api/chats/user/${user?.id}`}/> */}
-        <Post content={chatContent} handleChatClick={handleChatClick} url={`/api/chats/user/${user.email}`}/>
+        <Post email={user.email} apiCall={"post"} content={chatContent} handleChatClick={handleChatClick} url={`/api/chats/user/${user.email}`}/>
         </article>
         <article>
         <p>Your shared chats</p>
-        <Post content={chatContent} handleChatClick={handleChatClick} url={`/api/chats/share`}/>
+        <Post apiCall={"get"}content={chatContent} handleChatClick={handleChatClick} url={`/api/chats/share`}/>
 
         </article>
 

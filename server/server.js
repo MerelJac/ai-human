@@ -226,22 +226,18 @@ app.get("/api/chats/share", auth, async (req, res) => {
 });
 
 // Get chats for the user
-app.get("/api/chats/user/:email", auth, async (req, res) => {
+app.post("/api/chats/user/:email", auth, async (req, res) => {
   try {
     const userId = req.params.email;
-    const user = req.user.email;
-    console.log(userId, token);
-
-    // Decode the user information from the token
-    const decodedToken = jwt.verify(token, config.tokenSecret);
-    const tokenUserId = decodedToken.user.userId; // Adjust this based on your user object
+    const user = req.body.email;
+    console.log(userId, user);
 
     // Compare the decoded user ID with the provided userId
-    if (tokenUserId !== userId) {
+    if (user !== userId) {
       return res.status(403).json({ error: "Forbidden: You can only access your own chats" });
     }
 
-    const chats = await Chat.find({ userID: userId });
+    const chats = await Chat.find({ userEmail: user });
     res.json({ chats });
   } catch (err) {
     console.error("Error fetching chats: ", err);
@@ -257,6 +253,7 @@ const PORT = process.env.PORT || 8080;
 // Seed the chats -- TODO move later
 const chatSchema = new mongoose.Schema({
   userID: { type: String, required: true },
+  userEmail: {type: String},
   chatContent: { type: [String], required: true },
   shareChat: { type: Boolean, default: false,},
   collabUsers: { type: [String], default: [] },
@@ -267,6 +264,7 @@ const Chat = mongoose.model("Chat", chatSchema);
 
 const chat = new Chat({
   userID: 2,
+  userEmail: "merel.burleigh@gmail.com",
   chatContent: "Cross your fingers!",
   collabUsers: [3],
   shareChat: true

@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../../App"; // Import the AuthContext from App.js
 
-export default function Post({ url, chatContent, handleChatClick }) {
+export default function Post({ url, chatContent, handleChatClick, apiCall, email }) {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [chats, setChats] = useState([]);
   const [chatboxContent, setChatboxContent] = useState(""); // Add this line
@@ -10,9 +10,21 @@ export default function Post({ url, chatContent, handleChatClick }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (loggedIn === true) {
+      if (loggedIn === true && apiCall==="get") {
         try {
           const response = await axios.get(`${serverUrl}${url}`, {
+            withCredentials: true,
+          });
+
+          const fetchedData = response.data.chats;
+          setChats(fetchedData);
+        } catch (err) {
+          console.error(err);
+        }
+      } if (loggedIn === true && apiCall==="post") {
+        try {
+            console.log(email)
+          const response = await axios.post(`${serverUrl}${url}`, { email: email}, {
             withCredentials: true,
           });
 
