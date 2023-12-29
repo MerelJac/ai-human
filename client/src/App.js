@@ -1,5 +1,7 @@
 import logo from "./robot.png";
 import "./App.css";
+import NotFound from "./pages/NotFound";
+import Test from "./pages/Test"
 
 import {
   RouterProvider,
@@ -170,7 +172,13 @@ const router = createBrowserRouter([
   {
     path: "/auth/callback", // google will redirect here
     element: <Callback />,
-  },
+  }, {
+    path: "/test",
+    element: <Test />
+  }, {
+    path: "*",
+    element: <NotFound/>
+  }
 ]);
 
 function App() {

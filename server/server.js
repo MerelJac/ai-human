@@ -5,6 +5,8 @@ import axios from "axios";
 import queryString from "query-string";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
+import mongodb from "mongodb";
+import mongoose, { connect } from "mongoose";
 
 const config = {
   clientId: process.env.GOOGLE_CLIENT_ID,
@@ -61,6 +63,9 @@ const auth = (req, res, next) => {
     res.status(401).json({ message: "Unauthorized" });
   }
 };
+
+const MongoClient = mongodb.MongoClient;
+const url = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/ai-human";
 
 app.get("/auth/url", (_, res) => {
   res.json({
@@ -130,16 +135,68 @@ app.post("/auth/logout", (_, res) => {
 });
 
 app.get("/user/posts", auth, async (_, res) => {
-    try {
-      const { data } = await axios.get(config.postUrl);
-      res.json({ posts: data?.slice(0, 5) });
-    } catch (err) {
-      console.error("Error fetching posts: ", err);
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  });
-  
+  try {
+    const { data } = await axios.get(config.postUrl);
+    res.json({ posts: data?.slice(0, 5) });
+  } catch (err) {
+    console.error("Error fetching posts: ", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Define a route to get all chats
+app.get("/api/chats", async (req, res) => {
+  try {
+    const chats = await Chat.find();
+    res.json({ chats });
+  } catch (err) {
+    console.error("Error fetching chats: ", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, () => console.log(`🚀 Server listening on port ${PORT}`));
+// app.listen(PORT, () => console.log(`🚀 Server listening on port ${PORT}`));
+
+const chatSchema = new mongoose.Schema({
+  userID: { type: Number, required: true },
+  chatContent: { type: String, required: true, unique: true },
+  collabUsers: { type: [String], default: [] },
+});
+
+
+const Chat = mongoose.model("Chat", chatSchema);
+
+const chat = new Chat({
+  userID: 2,
+  chatContent: "Cross your fingers!",
+  collabUsers: [3],
+});
+chat.save().then(
+  (res) => console.log("One entry added", res),
+  (err) => console.log(err)
+);
+
+const connectToMongoDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('Connected to MongoDB');
+  } catch (err) {
+    console.error('Error connecting to MongoDB:', err);
+    throw err;
+  }
+};
+
+
+connectToMongoDB()
+  .then(() => {
+    const PORT = process.env.PORT || 8080;
+    app.listen(PORT, () => console.log(`🚀 Server listening on port ${PORT}`));
+  })
+  .catch((err) => {
+    console.error("Error starting the server:", err);
+  });
