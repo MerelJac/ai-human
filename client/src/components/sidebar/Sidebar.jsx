@@ -1,17 +1,13 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import logo from '../../robot.png';
 import Post from '../posts/Post';
-import { AuthContext } from '../../App';
 
 export default function Sidebar({chatContent, handleChatClick, setChatId, setChatboxContent, user}) {
-    // const {user} = useContext(AuthContext)
 
 
     const triggerNewChat = () => {
         setChatId("")
     }
-
-    console.log(user.email)
 
   return (
     <div className='flex flex-col'>
@@ -34,7 +30,6 @@ export default function Sidebar({chatContent, handleChatClick, setChatId, setCha
         <article>
         <p>Your shared chats</p>
         <Post apiCall={"get"}content={chatContent} handleChatClick={handleChatClick} url={`/api/chats/share`}/>
-
         </article>
 
       </section>

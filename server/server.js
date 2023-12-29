@@ -230,7 +230,6 @@ app.post("/api/chats/user/:email", auth, async (req, res) => {
   try {
     const userId = req.params.email;
     const user = req.body.email;
-    console.log(userId, user);
 
     // Compare the decoded user ID with the provided userId
     if (user !== userId) {
@@ -265,7 +264,7 @@ const Chat = mongoose.model("Chat", chatSchema);
 const chat = new Chat({
   userID: 2,
   userEmail: "merel.burleigh@gmail.com",
-  chatContent: "Cross your fingers!",
+  chatContent: "Why did the anarchist bring a ladder to the protest?",
   collabUsers: [3],
   shareChat: true
 });

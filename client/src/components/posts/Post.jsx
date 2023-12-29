@@ -23,7 +23,6 @@ export default function Post({ url, chatContent, handleChatClick, apiCall, email
         }
       } if (loggedIn === true && apiCall==="post") {
         try {
-            console.log(email)
           const response = await axios.post(`${serverUrl}${url}`, { email: email}, {
             withCredentials: true,
           });
@@ -37,7 +36,7 @@ export default function Post({ url, chatContent, handleChatClick, apiCall, email
     };
 
     fetchData();
-  }, [loggedIn, serverUrl, url]);
+  }, [apiCall, email, loggedIn, serverUrl, url, chats]);
 
   
   
