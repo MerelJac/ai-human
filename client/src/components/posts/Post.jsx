@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../../App"; // Import the AuthContext from App.js
 
-export default function Post() {
+export default function Post({ url }) {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [chats, setChats] = useState([]);
   const { loggedIn } = useContext(AuthContext);
@@ -11,16 +11,16 @@ export default function Post() {
     const fetchData = async () => {
       if (loggedIn === true) {
         try {
-          // Get chats from server
-          const response = await axios.get(`${serverUrl}/api/chats`, {
+          // Get data from the provided URL
+          const response = await axios.get(`${serverUrl}${url}`, {
             withCredentials: true,
           });
 
           // Adjust the destructuring based on your server response
-          const fetchedChats = response.data.chats; // or response.data.chats if necessary
+          const fetchedData = response.data.chats; // or response.data.chats if necessary
 
-          console.log(fetchedChats);
-          setChats(fetchedChats);
+          console.log(fetchedData);
+          setChats(fetchedData);
         } catch (err) {
           console.error(err);
         }
@@ -28,16 +28,20 @@ export default function Post() {
     };
 
     fetchData();
-  }, [loggedIn, serverUrl]);
+  }, [loggedIn, serverUrl, url]);
 
   return (
     <div>
       <div>
-      {chats.map((chat) => (
-          <div key={chat._id}>
-            <h3 className="max-w-full truncate">{chat.chatContent}</h3>
-          </div>
-        ))}
+        {chats.length > 0 ? (
+          chats.map((chat) => (
+            <div className="bg-gray-500 rounded-lg" key={chat._id}>
+              <h3 className="max-w-full truncate">{chat.chatContent}</h3>
+            </div>
+          ))
+        ) : (
+          <p>No chats available</p>
+        )}
       </div>
     </div>
   );

@@ -166,6 +166,16 @@ app.get("/api/chats/share", auth, async (req, res) => {
   }
 });
 
+// Get chats for the user
+app.get("/api/chats/user/:id", auth, async (req, res) => {
+  try {
+    const chats = await Chat.find({userID: req.params.id});
+    res.json({ chats });
+  } catch (err) {
+    console.error("Error fetching chats: ", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 const PORT = process.env.PORT || 8080;
 
