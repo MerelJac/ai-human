@@ -2,8 +2,10 @@ import axios from "axios";
 import React, { useState } from "react";
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
-export default function Chatbox({content}) {
+export default function Chatbox({ content, chatId, user }) {
   const [chatText, setChatText] = useState("");
+  const [newChatId, setNewChatId] =useState(chatId)
+
 
   // Update chatText when the content prop changes
 
@@ -13,21 +15,42 @@ export default function Chatbox({content}) {
 
   const handleButtonClick = async () => {
     try {
-      // Send the chatText in the request body
-      await axios.post(
-        `${serverUrl}/api/chats`,
-        { chatText },
-        { withCredentials: true }
-      );
-      setChatText("");
+      if (!chatId) {
+        // If there is no chatId, it means it's a new chat, so make a POST request
+        console.log("hit me")
+        const response = await axios.post(
+          `${serverUrl}/api/chats`,
+          { chatText },
+          { withCredentials: true }
+        );
+        // Assuming the server returns the created chatId in the response
+        const chatIdNew = response.data.chat._id; // Adjust this based on your server response
+        console.log(chatIdNew)
+        setNewChatId(chatIdNew);
+        setChatText("");
+      } else {
+        console.log("hit me")
+        // If there is a chatId, it means it's an existing chat, so make a PUT request
+        await axios.put(
+          `${serverUrl}/api/chats/${chatId}`, // Include the chatId in the URL
+          { chatText },
+          { withCredentials: true },
+          {headers: {
+            'Content-Type': 'application/json',
+          },}
+        );
+        setChatText("");
+      }
     } catch (error) {
-      console.log("Error posting the chat", error);
+      console.log("Error posting or updating the chat", error);
     }
   };
+  
+  
 
   return (
     <div>
-      <section>
+      <section key={newChatId || chatId}>
         {/* Render the content prop here or use it as needed */}
         {content}
       </section>

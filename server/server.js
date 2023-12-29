@@ -158,9 +158,8 @@ app.get("/api/chats", auth, async (req, res) => {
 });
 
 // post a chat
-app.post("/api/chats", auth, async (req, res) => {
+app.post("/api/chats/", auth, async (req, res) => {
   try {
-    console.log(req.body)
     // Get the chatText from the request body
     const chatText = req.body.chatText;
 
@@ -180,6 +179,39 @@ app.post("/api/chats", auth, async (req, res) => {
     res.json({ chat });
   } catch (err) {
     console.error("Error creating chat: ", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.put("/api/chats/:chatId", auth, async (req, res) => {
+  try {
+    console.log("hit me")
+    const chatId = req.params.chatId;
+    const chatText = req.body.chatText;
+
+    // Check if chatText is provided
+    if (!chatText) {
+      return res.status(400).json({ error: "Chat text is required" });
+    }
+
+    // Find the chat by chatId and userID
+    const chat = await Chat.findOne({
+      _id: chatId
+    });
+
+    console.log(chatId)
+    // Check if the chat exists
+    if (!chat) {
+      return res.status(404).json({ error: "Chat not found" });
+    }
+
+    // Update the chat content
+    chat.chatContent = chatText;
+    await chat.save();
+
+    res.json({ chat });
+  } catch (error) {
+    console.error("Error updating chat: ", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
@@ -214,7 +246,7 @@ const PORT = process.env.PORT || 8080;
 // Seed the chats -- TODO move later
 const chatSchema = new mongoose.Schema({
   userID: { type: String, required: true },
-  chatContent: { type: String, required: true, unique: true },
+  chatContent: { type: [String], required: true },
   shareChat: { type: Boolean, default: false,},
   collabUsers: { type: [String], default: [] },
 });

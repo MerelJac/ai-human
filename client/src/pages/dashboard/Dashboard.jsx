@@ -10,6 +10,7 @@ export default function Dashboard() {
   const [chats, setChats] = useState([]);
   // pass chats
   const [ chatContent, setChatboxContent ] = useState("")
+  const [chatId, setChatId] = useState("")
 
   useEffect(() => {
     (async () => {
@@ -40,10 +41,10 @@ export default function Dashboard() {
     }
   };
 
-  const handleChatClick = (content) => {
+  const handleChatClick = (content, id) => {
     // Update the content in the Chatbox component
-    console.log(content)
     setChatboxContent(content);
+    setChatId(id)
   };
 
   return (
@@ -63,7 +64,7 @@ export default function Dashboard() {
           </footer>
         </section>
         <section className="w-2/3 relative">
-          <Chatbox content={chatContent}  />
+          <Chatbox user={user} content={chatContent} chatId={chatId} />
         </section>
       </div>
     </>
