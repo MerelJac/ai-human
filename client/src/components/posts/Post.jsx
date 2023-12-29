@@ -40,7 +40,7 @@ export default function Post({ url, chatContent, handleChatClick }) {
               key={chat._id}
               onClick={() => handleChatClick(chat.chatContent, chat._id)}
             >
-              <h3 className="max-w-full truncate">{chat.chatContent}</h3>
+              <h3 className="max-w-full truncate">{chat.chatContent[0]}</h3>
             </div>
           ))
         ) : (

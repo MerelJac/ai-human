@@ -205,8 +205,8 @@ app.put("/api/chats/:chatId", auth, async (req, res) => {
       return res.status(404).json({ error: "Chat not found" });
     }
 
-    // Update the chat content
-    chat.chatContent = chatText;
+    // Push up the chat content
+    chat.chatContent.push(chatText);
     await chat.save();
 
     res.json({ chat });
