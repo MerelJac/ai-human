@@ -11,7 +11,7 @@ function Test() {
   return (
     <div>
       <p>Homepage</p>
-      <div>{data}
+      <div>{data.chats.map(chat => <p key={chat.id}>{chat.chatContent}</p>)}
     </div>
     </div>
   )
