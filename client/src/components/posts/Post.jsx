@@ -33,7 +33,7 @@ export default function Post({ url }) {
       <div>
         {chats.length > 0 ? (
           chats.map((chat) => (
-            <div className="bg-gray-500 rounded-lg" key={chat._id}>
+            <div className=" my-2 bg-gray-500 rounded-lg" key={chat._id}>
               <h3 className="max-w-full truncate">{chat.chatContent}</h3>
             </div>
           ))

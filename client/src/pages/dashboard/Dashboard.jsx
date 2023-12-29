@@ -8,6 +8,7 @@ export default function Dashboard() {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const { user, loggedIn, checkLoginState } = useContext(AuthContext);
   const [chats, setChats] = useState([]);
+
   useEffect(() => {
     (async () => {
       if (loggedIn === true) {
@@ -40,9 +41,9 @@ export default function Dashboard() {
   return (
     <>
       <div className="flex flex-row w-full h-[100vh]">
-        <section className="w-1/3 bg-white text-black px-4">
+        <section className="w-1/3 bg-white text-black px-4 relative flex flex-col h-full">
           <Sidebar />
-          <footer className="flex absolute bottom-0">
+          <footer className="flex items-center justify-center absolute bottom-0 w-full">
             <img
               className="rounded-full"
               src={user?.picture}
@@ -54,9 +55,10 @@ export default function Dashboard() {
           </footer>
         </section>
         <section className="w-2/3 relative">
-          <Chatbox/>
+          <Chatbox />
         </section>
       </div>
     </>
   );
+  
 }
