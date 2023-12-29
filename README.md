@@ -51,7 +51,20 @@ The ai-human application is built on the MERN (MongoDB, Express.js, React.js, No
 5. **Access the Application:**
    Open your browser and navigate to `http://localhost:3000` to start using ai-human.
 
-   Certainly! Here's an example of how you can include the instructions in your README:
+
+## Deployed Application 
+
+Welcome to AI-Human
+
+![alt text](./assets/images/welcome.png)
+
+Login with Google OAuth
+
+![alt text](./assets/images/oauth.png)
+
+Landing Dashboard
+
+![alt text](./assets/images/landing.png)
 
 ## Local Development
 
