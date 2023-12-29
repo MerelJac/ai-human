@@ -196,8 +196,6 @@ app.put("/api/chats/:chatId", auth, async (req, res) => {
     const chat = await Chat.findOne({
       _id: chatId
     });
-
-    console.log(chatId)
     // Check if the chat exists
     if (!chat) {
       return res.status(404).json({ error: "Chat not found" });
@@ -225,6 +223,31 @@ app.get("/api/chats/share", auth, async (req, res) => {
   }
 });
 
+// PUT request to toggle shareChat for a specific chat
+app.put("/api/chats/share/:id", auth, async (req, res) => {
+  try {
+    const chatId = req.params.id;
+    
+    // Find the chat by ID
+    const chat = await Chat.findById(chatId);
+
+    // Check if the chat exists
+    if (!chat) {
+      return res.status(404).json({ error: "Chat not found" });
+    }
+
+    // Toggle the value of shareChat
+    chat.shareChat = !chat.shareChat;
+
+    // Save the updated chat
+    await chat.save();
+
+    res.json({ chat });
+  } catch (err) {
+    console.error("Error updating chat: ", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 // Get chats for the user
 app.post("/api/chats/user/:email", auth, async (req, res) => {
   try {
@@ -247,7 +270,6 @@ app.post("/api/chats/user/:email", auth, async (req, res) => {
 
 const PORT = process.env.PORT || 8080;
 
-// app.listen(PORT, () => console.log(`🚀 Server listening on port ${PORT}`));
 
 // Seed the chats -- TODO move later
 const chatSchema = new mongoose.Schema({

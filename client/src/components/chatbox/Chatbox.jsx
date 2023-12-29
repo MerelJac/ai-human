@@ -2,7 +2,12 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
-export default function Chatbox({ content, chatId, setChatboxContent, setChatId }) {
+export default function Chatbox({
+  content,
+  chatId,
+  setChatboxContent,
+  setChatId,
+}) {
   const [chatText, setChatText] = useState("");
   const [newChatId, setNewChatId] = useState(chatId);
 
@@ -13,19 +18,20 @@ export default function Chatbox({ content, chatId, setChatboxContent, setChatId 
   };
 
   const createRandomText = (length) => {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let randomString = '';
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let randomString = "";
 
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    randomString += characters.charAt(randomIndex);
-  }
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      randomString += characters.charAt(randomIndex);
+    }
 
-  return randomString;
-  }
+    return randomString;
+  };
 
   const handleButtonClick = async () => {
-    const chatPlusRandomString = [chatText, createRandomText(200)]
+    const chatPlusRandomString = [chatText, createRandomText(200)];
     try {
       if (!chatId) {
         // If there is no chatId, it means it's a new chat, so make a POST request
@@ -37,8 +43,8 @@ export default function Chatbox({ content, chatId, setChatboxContent, setChatId 
         // Assuming the server returns the created chatId in the response
         const chatIdNew = response.data.chat._id; // Adjust this based on your server response
         setNewChatId(chatIdNew);
-        setChatId(chatIdNew)
-        setChatboxContent(response.data.chat.chatContent)
+        setChatId(chatIdNew);
+        setChatboxContent(response.data.chat.chatContent);
         setChatText("");
       } else {
         // If there is a chatId, it means it's an existing chat, so make a PUT request
@@ -52,9 +58,28 @@ export default function Chatbox({ content, chatId, setChatboxContent, setChatId 
             },
           }
         );
-        setChatboxContent(response.data.chat.chatContent)
+        setChatboxContent(response.data.chat.chatContent);
         setChatText("");
       }
+    } catch (error) {
+      console.log("Error posting or updating the chat", error);
+    }
+  };
+
+  const handleShareClick = async () => {
+    try {
+      // If there is a chatId, it means it's an existing chat, so make a PUT request
+      const response = await axios.put(
+        `${serverUrl}/api/chats/share/${chatId}`, // Include the chatId in the URL
+        { withCredentials: true },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setChatboxContent(response.data.chat.chatContent);
+      setChatText("");
     } catch (error) {
       console.log("Error posting or updating the chat", error);
     }
@@ -76,9 +101,14 @@ export default function Chatbox({ content, chatId, setChatboxContent, setChatId 
           rows="3"
           style={{ resize: "none" }}
         />
-        <button className="btn" onClick={handleButtonClick}>
-          Go
-        </button>
+        <div className="flex flex-col">
+          <button className="btn" onClick={handleButtonClick}>
+            Go
+          </button>
+          <button className="btn" onClick={handleShareClick}>
+            Share
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -28,7 +28,7 @@ export default function Dashboard() {
         }
       }
     })();
-  }, [loggedIn, serverUrl]);
+  }, [loggedIn, serverUrl,]);
 
   const handleLogout = async () => {
     try {
