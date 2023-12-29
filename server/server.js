@@ -145,7 +145,7 @@ app.get("/user/posts", auth, async (_, res) => {
 });
 
 // Define a route to get all chats
-app.get("/api/chats", async (req, res) => {
+app.get("/api/chats", auth, async (req, res) => {
   try {
     const chats = await Chat.find();
     res.json({ chats });
@@ -162,6 +162,7 @@ const PORT = process.env.PORT || 8080;
 const chatSchema = new mongoose.Schema({
   userID: { type: Number, required: true },
   chatContent: { type: String, required: true, unique: true },
+  shareChat: { type: Boolean, required: true},
   collabUsers: { type: [String], default: [] },
 });
 
@@ -172,6 +173,7 @@ const chat = new Chat({
   userID: 2,
   chatContent: "Cross your fingers!",
   collabUsers: [3],
+  shareChat: true
 });
 chat.save().then(
   (res) => console.log("One entry added", res),
