@@ -6,7 +6,7 @@ export default function Post({ url, chatContent, handleChatClick }) {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [chats, setChats] = useState([]);
   const [chatboxContent, setChatboxContent] = useState(""); // Add this line
-  const { loggedIn } = useContext(AuthContext);
+  const { loggedIn, user } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {

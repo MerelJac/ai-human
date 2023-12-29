@@ -1,15 +1,18 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import logo from '../../robot.png';
 import Post from '../posts/Post';
 import { AuthContext } from '../../App';
 
-export default function Sidebar({chatContent, handleChatClick, setChatId}) {
-    const {user} = useContext(AuthContext)
+export default function Sidebar({chatContent, handleChatClick, setChatId, setChatboxContent, user}) {
+    // const {user} = useContext(AuthContext)
 
 
     const triggerNewChat = () => {
         setChatId("")
     }
+
+    console.log(user.email)
+
   return (
     <div className='flex flex-col'>
       <section className='flex items-center justify-between pb-4'>
@@ -26,10 +29,12 @@ export default function Sidebar({chatContent, handleChatClick, setChatId}) {
         <article>
         <p>Your recent chats</p>
         {/* <Post url={`/api/chats/user/${user?.id}`}/> */}
-        <Post content={chatContent} handleChatClick={handleChatClick} url={`/api/chats/`}/>
+        <Post content={chatContent} handleChatClick={handleChatClick} url={`/api/chats/user/${user.email}`}/>
         </article>
         <article>
         <p>Your shared chats</p>
+        <Post content={chatContent} handleChatClick={handleChatClick} url={`/api/chats/share`}/>
+
         </article>
 
       </section>

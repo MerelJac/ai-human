@@ -103,7 +103,7 @@ app.get("/auth/token", async (req, res) => {
     });
     // You can choose to store user in a DB instead
     res.json({
-      user,
+      user
     });
   } catch (err) {
     console.error("Error: ", err);
@@ -146,7 +146,7 @@ app.get("/user/posts", auth, async (_, res) => {
   }
 });
 
-// Define a route to get all chats
+//  get all chats
 app.get("/api/chats", auth, async (req, res) => {
   try {
     const chats = await Chat.find();
@@ -181,6 +181,7 @@ app.post("/api/chats/", auth, async (req, res) => {
   }
 });
 
+//update chat with ID
 app.put("/api/chats/:chatId", auth, async (req, res) => {
   try {
 
@@ -213,7 +214,6 @@ app.put("/api/chats/:chatId", auth, async (req, res) => {
   }
 });
 
-
 // Get chats that are shareable
 app.get("/api/chats/share", auth, async (req, res) => {
   try {
@@ -226,15 +226,29 @@ app.get("/api/chats/share", auth, async (req, res) => {
 });
 
 // Get chats for the user
-app.get("/api/chats/user/:id", auth, async (req, res) => {
+app.get("/api/chats/user/:email", auth, async (req, res) => {
   try {
-    const chats = await Chat.find({userID: req.params.id});
+    const userId = req.params.email;
+    const user = req.user.email;
+    console.log(userId, token);
+
+    // Decode the user information from the token
+    const decodedToken = jwt.verify(token, config.tokenSecret);
+    const tokenUserId = decodedToken.user.userId; // Adjust this based on your user object
+
+    // Compare the decoded user ID with the provided userId
+    if (tokenUserId !== userId) {
+      return res.status(403).json({ error: "Forbidden: You can only access your own chats" });
+    }
+
+    const chats = await Chat.find({ userID: userId });
     res.json({ chats });
   } catch (err) {
     console.error("Error fetching chats: ", err);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 const PORT = process.env.PORT || 8080;
 

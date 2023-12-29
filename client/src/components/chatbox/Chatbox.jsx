@@ -36,9 +36,9 @@ export default function Chatbox({ content, chatId, setChatboxContent, setChatId 
         );
         // Assuming the server returns the created chatId in the response
         const chatIdNew = response.data.chat._id; // Adjust this based on your server response
-        setChatboxContent(response.data.chat.chatContent)
         setNewChatId(chatIdNew);
         setChatId(chatIdNew)
+        setChatboxContent(response.data.chat.chatContent)
         setChatText("");
       } else {
         // If there is a chatId, it means it's an existing chat, so make a PUT request
