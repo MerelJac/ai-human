@@ -18,8 +18,6 @@ export default function Post({ url }) {
 
           // Adjust the destructuring based on your server response
           const fetchedData = response.data.chats; // or response.data.chats if necessary
-
-          console.log(fetchedData);
           setChats(fetchedData);
         } catch (err) {
           console.error(err);

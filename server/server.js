@@ -50,6 +50,8 @@ app.use(
 
 // Parse Cookie
 app.use(cookieParser());
+// Middleware
+app.use(express.json())
 
 // Verify auth
 const auth = (req, res, next) => {
@@ -155,6 +157,34 @@ app.get("/api/chats", auth, async (req, res) => {
   }
 });
 
+// post a chat
+app.post("/api/chats", auth, async (req, res) => {
+  try {
+    console.log(req.body)
+    // Get the chatText from the request body
+    const chatText = req.body.chatText;
+
+
+    // Check if chatText is provided
+    if (!chatText) {
+      return res.status(400).json({ error: "Chat text is required" });
+    }
+
+    // Create a new chat with the provided chatText
+    const chat = await Chat.create({
+      chatContent: chatText,
+      userID: req.cookies.token, // Assuming you have a user object attached to the request by your auth middleware
+      sharedUsers: [], // Add any other necessary fields
+    });
+
+    res.json({ chat });
+  } catch (err) {
+    console.error("Error creating chat: ", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
 // Get chats that are shareable
 app.get("/api/chats/share", auth, async (req, res) => {
   try {
@@ -183,9 +213,9 @@ const PORT = process.env.PORT || 8080;
 
 // Seed the chats -- TODO move later
 const chatSchema = new mongoose.Schema({
-  userID: { type: Number, required: true },
+  userID: { type: String, required: true },
   chatContent: { type: String, required: true, unique: true },
-  shareChat: { type: Boolean, required: true},
+  shareChat: { type: Boolean, default: false,},
   collabUsers: { type: [String], default: [] },
 });
 

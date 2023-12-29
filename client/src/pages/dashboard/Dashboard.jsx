@@ -2,6 +2,7 @@ import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../../App"; // Import the AuthContext from App.js
 import Sidebar from "../../components/sidebar/Sidebar";
+import Chatbox from "../../components/chatbox/Chatbox";
 
 export default function Dashboard() {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -52,8 +53,8 @@ export default function Dashboard() {
             </button>
           </footer>
         </section>
-        <section className="w-2/3">
-          <p>placeholder</p>
+        <section className="w-2/3 relative">
+          <Chatbox/>
         </section>
       </div>
     </>
