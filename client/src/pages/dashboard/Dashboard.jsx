@@ -6,18 +6,18 @@ import Sidebar from "../../components/sidebar/Sidebar";
 export default function Dashboard() {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
   const { user, loggedIn, checkLoginState } = useContext(AuthContext);
-  const [posts, setPosts] = useState([]);
+  const [chats, setChats] = useState([]);
   useEffect(() => {
     (async () => {
       if (loggedIn === true) {
         try {
           // Get posts from server
           const {
-            data: { posts },
-          } = await axios.get(`${serverUrl}/user/posts`, {
+            data: { chats },
+          } = await axios.get(`${serverUrl}/api/chats`, {
             withCredentials: true,
           });
-          setPosts(posts);
+          setChats(chats);
         } catch (err) {
           console.error(err);
         }

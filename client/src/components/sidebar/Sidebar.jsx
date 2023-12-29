@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from '../../robot.png';
+import Post from '../posts/Post';
 
 export default function Sidebar() {
 
@@ -19,6 +20,7 @@ export default function Sidebar() {
       <section>
         <article>
         <p>Your recent chats</p>
+        <Post/>
         </article>
         <article>
         <p>Your shared chats</p>
