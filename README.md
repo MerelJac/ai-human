@@ -51,6 +51,53 @@ The ai-human application is built on the MERN (MongoDB, Express.js, React.js, No
 5. **Access the Application:**
    Open your browser and navigate to `http://localhost:3000` to start using ai-human.
 
+   Certainly! Here's an example of how you can include the instructions in your README:
+
+## Local Development
+
+To run this application locally, follow these steps:
+
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/your-username/ai-human.git
+   cd ai-human
+   ```
+
+
+2. **Set up Environment Variables:**
+   Create a `.env` file in the `server` directory and provide the necessary environment variables. You can use the `.env.example` file as a template.
+   ```bash
+   cd server
+   cp .env.example .env
+   ```
+
+   Open the `.env` file in a text editor and replace the placeholder values with your actual configuration.
+
+3. **Run the Local Setup Script:**
+   Execute the provided `run.sh` script to set up the MongoDB server, install dependencies, and start both the server and the React app.
+   ```bash
+   chmod +x run.sh
+   ./run.sh
+   ```
+
+   The script assumes that your MongoDB data directory is set to `./data` in the root of your project. Adjust the `mongod` command in the script if your setup is different.
+
+
+
+4. **Run the Local Setup Script:**
+   Execute the provided `run.sh` script to set up the MongoDB server, install dependencies, and start both the server and the React app.
+   ```bash
+   chmod +x run.sh
+   ./run.sh
+   ```
+
+   The script assumes that your MongoDB data directory is set to `./data` in the root of your project. Adjust the `mongod` command in the script if your setup is different.
+
+. **Access the Application:**
+   Once the setup is complete, you can access the application locally:
+   - Server: http://localhost:8080
+   - Client (React App): http://localhost:3000
+
 ## Contributing
 
 Contributions are welcome! If you have ideas for improvements or find issues, please open an [issue](https://github.com/your-username/ai-human/issues) or submit a [pull request](https://github.com/your-username/ai-human/pulls).
