@@ -161,9 +161,9 @@ app.get("/api/chats", auth, async (req, res) => {
 app.post("/api/chats/", auth, async (req, res) => {
   try {
     // Get the chatText from the request body
-    const chatText = req.body.chatText;
+    const chatText = req.body.chatPlusRandomString;
 
-
+    console.log("chat text", [chatText])
     // Check if chatText is provided
     if (!chatText) {
       return res.status(400).json({ error: "Chat text is required" });
@@ -185,10 +185,10 @@ app.post("/api/chats/", auth, async (req, res) => {
 
 app.put("/api/chats/:chatId", auth, async (req, res) => {
   try {
-    console.log("hit me")
-    const chatId = req.params.chatId;
-    const chatText = req.body.chatText;
 
+    const chatId = req.params.chatId;
+    const chatText = req.body.chatPlusRandomString;
+    console.log("hit me", [chatText])
     // Check if chatText is provided
     if (!chatText) {
       return res.status(400).json({ error: "Chat text is required" });
@@ -206,7 +206,7 @@ app.put("/api/chats/:chatId", auth, async (req, res) => {
     }
 
     // Push up the chat content
-    chat.chatContent.push(chatText);
+    chat.chatContent.push(...chatText);
     await chat.save();
 
     res.json({ chat });

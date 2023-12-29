@@ -12,14 +12,28 @@ export default function Chatbox({ content, chatId, setChatboxContent }) {
     setChatText(e.target.value);
   };
 
+  const createRandomText = (length) => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let randomString = '';
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    randomString += characters.charAt(randomIndex);
+  }
+
+  return randomString;
+  }
+
   const handleButtonClick = async () => {
+    const chatPlusRandomString = [chatText, createRandomText(200)]
+    console.log(chatPlusRandomString)
     try {
       if (!chatId) {
         // If there is no chatId, it means it's a new chat, so make a POST request
         console.log("hit me");
         const response = await axios.post(
           `${serverUrl}/api/chats`,
-          { chatText },
+          { chatPlusRandomString },
           { withCredentials: true }
         );
         // Assuming the server returns the created chatId in the response
@@ -32,7 +46,7 @@ export default function Chatbox({ content, chatId, setChatboxContent }) {
         // If there is a chatId, it means it's an existing chat, so make a PUT request
         const response = await axios.put(
           `${serverUrl}/api/chats/${chatId}`, // Include the chatId in the URL
-          { chatText },
+          { chatPlusRandomString },
           { withCredentials: true },
           {
             headers: {
