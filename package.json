@@ -3,14 +3,17 @@
   "version": "1.0.0",
   "description": "## Overview",
   "main": "index.js",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "start": "node server/server.js --ignore client",
     "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
     "install": "cd server && npm i && cd ../client && npm i",
     "seed": "cd server && npm run seed",
     "build": "cd client && npm run build",
-    "heroku-postbuild": "npm run install-client && npm run build",
-    "install-client": "cd ../client && npm install"
+    "heroku-postbuild": "cd /client && npm run install-client && npm run build",
+    "install-client": "cd /client && npm install"
   },
   "author": "",
   "license": "ISC",
